@@ -89,7 +89,7 @@ def get_order(db: Session, order_id: int) -> models.Order:
     """
     return db.query(models.Order).filter(models.Order.id == order_id).first()
 
-def update_order_status(db: Session, order_id: int, order: schemas.OrderUpdateStatus, status: StatusEnum) -> models.Order:
+def update_order_status(db: Session, order_id: int, order: schemas.OrderUpdateStatus) -> models.Order:
     """
     Обновляет статус заказа в базе данных.
 
@@ -99,13 +99,11 @@ def update_order_status(db: Session, order_id: int, order: schemas.OrderUpdateSt
     :type order_id: int
     :param order: Данные для обновления статуса заказа.
     :type order: schemas.OrderUpdateStatus
-    :param status: Новый статус заказа.
-    :type status: StatusEnum
     :return: Обновленный заказ или None, если заказ не найден.
     :rtype: models.Order
     """
     db_order = get_order(db, order_id)
-
+    status = order.status
     if db_order:
         db_order.status = status
 

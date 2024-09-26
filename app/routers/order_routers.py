@@ -6,7 +6,6 @@ from .. import schemas
 from ..database import get_db
 from ..services import order_services
 
-from ..utils import StatusEnum
 
 router = APIRouter(prefix='/orders')
 
@@ -61,11 +60,7 @@ def get_order(order_id: int, db: Session = Depends(get_db)) -> schemas.Order:
     return order
 
 @router.patch('/{order_id}/status')
-def update_order_status(order_id: int, 
-                        order: schemas.OrderUpdateStatus, 
-                        status: StatusEnum, 
-                        db: Session = Depends(get_db)
-                        ) -> schemas.Order:
+def update_order_status(order_id: int, order: schemas.OrderUpdateStatus, db: Session = Depends(get_db)) -> schemas.Order:
     """
     Обновляет статус заказа.
 
@@ -73,11 +68,9 @@ def update_order_status(order_id: int,
     :type order_id: int
     :param order: Данные для обновления статуса заказа.
     :type order: schemas.OrderUpdateStatus
-    :param status: Новый статус заказа.
-    :type status: StatusEnum
     :param db: Сессия базы данных.
     :type db: Session
     :return: Обновленный заказ.
     :rtype: schemas.Order
     """
-    return order_services.update_order_status(db, order_id, order, status)
+    return order_services.update_order_status(db, order_id, order)
